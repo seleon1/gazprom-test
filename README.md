@@ -1,16 +1,27 @@
-# gazprom_test
+# Weather App
 
-A new Flutter project.
+Тестовое задание на должность Flutter-разработчика
 
-## Getting Started
+## Описание приложения
 
-This project is a starting point for a Flutter application.
+Приложение предназначено для получения данных о погоде по геолокации пользователя. Прежде всего, пользователю необходимо войти в систему. После этого ему предстанет главный экран с информацией о текущем местоположении, текущей погоде, погоде на несколько часов вперед и данными о скорости и направлении ветра и уровне влажности воздуха.
 
-A few resources to get you started if this is your first Flutter project:
+## Техническое описание
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Проект реализован при помощи инструмента управления состоянием BLoC в совокупности с Сlean Architecture. В приложении выделяются 3 логических уровня: Data layer, Domain layer и Presentation layer.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Элементы Data и Domain уровней расположены в папке `packages`. К Data относится локальный пакет `weather_api`, к Domain - `weather_repository` и `authentication_repository`. Через `weather_api` происходит получение данных о погоде из сервиса [OpenWeather](https://openweathermap.org/api). Затем, данные оттуда переходят в `weather_repository`, которые, в свою очередь, будут подготовлены к отображению в интерфейсе. `authentication_repository` взаимодействует с Firebase API и отвечает за хранение сессии пользователя в приложении после аутентификации.
+
+Получаемые данные в Domain уровне переходят в Presentation, который, в свою очередь, состоит из Bloc-компонентов и визуальных элементов такие как экраны, виджеты и т.д. Выделены 3 основных "фичи" в Presentation слое:
+- `app` - отвечает за инициализацию приложения и навигацию по экранам, которая реализована при помощи [go_router](https://pub.dev/packages/go_router).
+- `login` - отвечает за отправку данных в Firebase для аутентификации. Содержит экран и виджеты логина.
+- `weather` - отвечает за отображение данных о погоде и отправке запроса на их получение.
+
+В приложении реализована обработка ошибок. Так, если пользователь ввел почту неверного формата, то ему отобразится об этом уведомление.
+
+Поддержка оффлайн-данных о погоде происходит при помощи HydratedBloc в компоненте `weather`.
+
+## Известные проблемы
+
+- недостаточно качественный splash screen и некоторые иконки;
+- отсутствие анимации при первой загрузке данных о погоде (планировал использовать [shimmer](https://pub.dev/packages/shimmer)).
