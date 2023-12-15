@@ -1,4 +1,5 @@
 part of 'weather_bloc.dart';
 
-@immutable
-sealed class WeatherEvent {}
+abstract class WeatherEvent {}
+
+class WeatherDataRequested extends WeatherEvent {}

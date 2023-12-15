@@ -34,6 +34,7 @@ class AppView extends StatelessWidget {
     final routerConfig =
         buildRouter(context.select((AppBloc bloc) => bloc.state.status));
     return MaterialApp.router(
+      theme: ThemeData(fontFamily: 'Roboto'),
       debugShowCheckedModeBanner: false,
       routerConfig: routerConfig,
     );

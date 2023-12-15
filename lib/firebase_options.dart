@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCuKqwEoc9WcwtQWmSloALbgvnos2hfXpA',
-    appId: '1:997773594668:android:47bd13b23bd39a69260189',
-    messagingSenderId: '997773594668',
-    projectId: 'gazprom-test-51540',
-    storageBucket: 'gazprom-test-51540.appspot.com',
+    apiKey: 'AIzaSyD4qPwIrMoPuGkYFVKG_rNkO3uA8X92_WA',
+    appId: '1:624425073332:android:75f9e6ba1892382201b5e1',
+    messagingSenderId: '624425073332',
+    projectId: 'gazprom-test-20c66',
+    storageBucket: 'gazprom-test-20c66.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyACxWSnqYhTYAkNiM57m6nHgZh3uSrmTi0',
-    appId: '1:997773594668:ios:6b22f90a6ac5f7ba260189',
-    messagingSenderId: '997773594668',
-    projectId: 'gazprom-test-51540',
-    storageBucket: 'gazprom-test-51540.appspot.com',
+    apiKey: 'AIzaSyCBylRr-s_FeofDTPqaIEpuN99NC5V78co',
+    appId: '1:624425073332:ios:915977c1b3ee6f1d01b5e1',
+    messagingSenderId: '624425073332',
+    projectId: 'gazprom-test-20c66',
+    storageBucket: 'gazprom-test-20c66.appspot.com',
     iosBundleId: 'com.example.gazpromTest',
   );
 }

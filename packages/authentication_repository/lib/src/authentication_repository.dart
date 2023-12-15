@@ -2,40 +2,37 @@ import 'package:authentication_repository/src/models/models.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 class LogInWithEmailAndPasswordFailure implements Exception {
-  /// {@macro log_in_with_email_and_password_failure}
   const LogInWithEmailAndPasswordFailure([
-    this.message = 'An unknown exception occurred.',
+    this.message = 'Неизвестная ошибка',
   ]);
 
   factory LogInWithEmailAndPasswordFailure.fromCode(String code) {
     switch (code) {
       case 'invalid-email':
         return const LogInWithEmailAndPasswordFailure(
-          'Email is not valid or badly formatted.',
+          'Неверный формат почты',
         );
       case 'user-disabled':
         return const LogInWithEmailAndPasswordFailure(
-          'This user has been disabled. Please contact support for help.',
+          'Пользователь отключен',
         );
       case 'user-not-found':
         return const LogInWithEmailAndPasswordFailure(
-          'Email is not found, please create an account.',
+          'Пользователя с такой почтой не существует',
         );
-      case 'wrong-password':
+      case 'invalid-credential':
         return const LogInWithEmailAndPasswordFailure(
-          'Incorrect password, please try again.',
+          'Неверная почта или пароль',
         );
       default:
         return const LogInWithEmailAndPasswordFailure();
     }
   }
 
-  /// The associated error message.
   final String message;
 }
 
 class AuthenticationRepository {
-  /// {@macro authentication_repository}
   AuthenticationRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
   }) : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance;

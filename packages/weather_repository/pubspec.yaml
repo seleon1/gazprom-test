@@ -8,8 +8,10 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
+  geocoding: ^2.1.1
   geolocator: ^10.1.0
   weather_api:
     path: '../weather_api'

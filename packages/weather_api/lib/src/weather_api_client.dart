@@ -1,16 +1,13 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:weather_api/src/models/models.dart';
 
 class WeatherRequestFailure implements Exception {}
 
-class WeatherNotFoundFailure implements Exception {}
+class WeatherDataNotFoundFailure implements Exception {}
 
 class HourlyWeatherRequestFailure implements Exception {}
 
-class HourlyWeatherNotFoundFailure implements Exception {}
+class HourlyWeatherDataNotFoundFailure implements Exception {}
 
 class WeatherApiClient {
   WeatherApiClient({Dio? dio}) : _dio = dio ?? Dio();
@@ -18,9 +15,7 @@ class WeatherApiClient {
 
   static const _baseWeatherUrl = 'https://api.openweathermap.org';
 
-  // Weather
-  Future<void> getWeather(double lat, double lon) async {
-    // https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&units=metric&appid=2e4f67869320be754947b22d7893aba1
+  Future<Weather> getWeather(double lat, double lon) async {
     final response =
         await _dio.get('$_baseWeatherUrl/data/2.5/weather', queryParameters: {
       'lat': lat,
@@ -33,23 +28,23 @@ class WeatherApiClient {
       throw WeatherRequestFailure();
     }
 
-    final bodyJson = jsonDecode(response.data) as Map<String, dynamic>;
+    final body = response.data as Map<String, dynamic>;
 
-    if (!bodyJson.containsKey('weather') ||
-        !bodyJson.containsKey('main') ||
-        !bodyJson.containsKey('wind')) {
-      throw WeatherNotFoundFailure();
+    if (!body.containsKey('weather') ||
+        !body.containsKey('main') ||
+        !body.containsKey('wind')) {
+      throw WeatherDataNotFoundFailure();
     }
-    inspect(bodyJson);
+
+    return Weather.fromJson(body);
   }
 
-  // List<HourlyWeather>
-  Future<void> getHourlyWeather(double lat, double lon) async {
-    // https://api.openweathermap.org/data/2.5/forecast?lat=44.34&lon=10.99&units=metric&cnt=4&appid=2e4f67869320be754947b22d7893aba1
+  Future<List<HourlyWeather>> getHourlyWeather(double lat, double lon) async {
     final response =
         await _dio.get('$_baseWeatherUrl/data/2.5/forecast', queryParameters: {
       'lat': lat,
       'lon': lon,
+      'cnt': 4,
       'units': 'metric',
       'appid': '2e4f67869320be754947b22d7893aba1',
     });
@@ -58,14 +53,16 @@ class WeatherApiClient {
       throw HourlyWeatherRequestFailure();
     }
 
-    final bodyJson = jsonDecode(response.data) as Map<String, dynamic>;
+    final bodyJson = response.data as Map<String, dynamic>;
 
-    if (!bodyJson.containsKey('weather') ||
-        !bodyJson.containsKey('main') ||
-        !bodyJson.containsKey('wind')) {
-      throw WeatherNotFoundFailure();
+    if (!bodyJson.containsKey('list')) {
+      throw HourlyWeatherDataNotFoundFailure();
     }
 
-    inspect(bodyJson);
+    final weatherList = bodyJson['list'] as List;
+
+    return weatherList
+        .map((json) => HourlyWeather.fromJson(json as Map<String, dynamic>))
+        .toList();
   }
 }
